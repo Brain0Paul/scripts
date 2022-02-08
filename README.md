@@ -1,4 +1,4 @@
-# scripts
+# Scripts
 
 Vous trouverez ici des scripts pour installer différentes choses facilement.
 
