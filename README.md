@@ -1,2 +1,6 @@
 # scripts
-This is a scripts for install docker and docker-compose.
+Vous trouverez ici des scripts pour installer différentes choses facilement.
+---
+Here you will find scripts to install different things easily.
+
+By Paul Pascual
