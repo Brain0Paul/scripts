@@ -32,5 +32,5 @@ chmod +x /usr/local/bin/docker-compose
 clear
 
 echo "Installation de docker et docker-compose terminée avec succès"
-echo "By Paul Pascual   
+echo "By Paul Pascual" 
 echo "github.com/UnLabrador"
