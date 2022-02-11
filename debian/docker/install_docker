@@ -1,4 +1,10 @@
 #!/bin/bash
+###################################################### #
+#                                                      #
+# Installation automatique de Docker par Paul Pascual #
+#                                                      #
+########################################################
+
 clear
 
 # Désinstaller les anciennes versions de docker
