@@ -37,6 +37,11 @@ chmod +x /usr/local/bin/docker-compose
 
 clear
 
-echo "Installation de docker et de docker-compose terminée avec succès"
-echo "By Paul Pascual" 
-echo "github.com/UnLabrador"
+echo ""
+tput setaf 7; echo "---------------------------------------------------------"
+tput bold; tput setaf 7; echo "         => INSTALLATION DE DOCKER TERMINEE <="
+tput setaf 7; echo ""
+tput bold; tput setaf 6; echo "                By Paul Pascual"
+tput bold; tput setaf 6; echo "                Pascual.link"
+tput setaf 7; echo "---------------------------------------------------------"
+tput setaf 2; echo ""
