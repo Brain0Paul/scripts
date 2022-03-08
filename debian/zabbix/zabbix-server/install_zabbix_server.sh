@@ -43,5 +43,5 @@ tput setaf 7; echo "         ID : admin / MDP : admin                           
 tput setaf 7; echo ""
 tput bold; tput setaf 6; echo "                By Paul Pascual                      "
 tput bold; tput setaf 6; echo "                Pascual.link                         "
-tput setaf 7; echo "----------------------------------------------------------------"
+tput setaf 7; echo "------------------------------------------------------------------"
 tput setaf 2; echo ""
