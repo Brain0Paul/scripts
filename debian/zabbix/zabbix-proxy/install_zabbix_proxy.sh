@@ -19,7 +19,7 @@ systemctl start docker
 systemctl start snmpd
 
 # Modification et lancement du docker-compose.yml
-for file in ~/scripts/debian/zabbix-proxy/docker-compose.yml
+for file in ~/scripts/debian/zabbix/zabbix-proxy/docker-compose.yml
 do
   echo "Traitement de $file ..."
   sed -i -e "s/ZABBIX_HOST_IP/$ZABBIX_HOST_IP/g" "$file"
