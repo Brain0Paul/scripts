@@ -7,9 +7,6 @@ dpkg -i zabbix-release_6.0-1+debian11_all.deb
 apt update 
 apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent 
 
-mysql -uroot -p
-
-
 tput setaf 7; echo "------------------------------------------------------------------"
 tput bold; tput setaf 7; echo "         => INSTALLATION de ZABBIX-SERVER TERMINEE <="
 tput setaf 7; echo ""
