@@ -30,6 +30,7 @@ function Install-PaquetsEssentiels {
   apt install -y curl
   apt install -y vim
   apt install -y git
+  apt install -y htop
 }
 
 function Install-Zsh {
