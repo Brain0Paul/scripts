@@ -70,12 +70,12 @@ function Change-Hosts {
   for file in /etc/hosts
   do
     echo "Traitement de $file ..."
-    sed -i -e "s/deb-11-template/$hostname/" "$file"
+    sed -i -e "s/$old_hostname/$hostname/" "$file"
   done 
 }
 
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
-  tput setaf 7; echo "                                 => deb-11-template remplacé par $hostname.                         "
+  tput setaf 7; echo "                                 => $old_hostname remplacé par $hostname.                           "
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 
 }
