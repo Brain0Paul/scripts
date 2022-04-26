@@ -53,6 +53,21 @@ function Change-SSHPort {
 
 }
 
+# Désactivation PrintLastLog
+function NoLastLog {
+  cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
+
+  for file in /etc/ssh/sshd_config
+  do
+    echo "Traitement de $file ..."
+    sed -i -e "s/#PrintLastLog yes/PrintLastLog no/" "$file"
+  done  
+  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
+  tput setaf 7; echo "                                 => Désactivation de PrintLastLog                                   "
+  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
+
+}
+
 # Changement du hostname
 function Change-Hostname {
   cp /etc/hostname /etc/hostname_backup
@@ -181,7 +196,17 @@ if [ $change_hostname = "y" ]
   tput setaf 6; echo "Changement du hostname.................................................................... En cours"
   Change-Hostname
   Change-Hosts
+  Change-Hosts
   tput setaf 7; echo "Changement du hostname.................................................................... OK"
+fi
+
+echo ""
+echo ""
+if [ $change_hostname = "y" ]
+  then
+  tput setaf 6; echo "Désactivation de PrintLastLog........................................................ En cours"
+  NoLastLog
+  tput setaf 7; echo "Désactivation de PrintLastLog.............................................................. OK"
 fi
 
 echo ""
