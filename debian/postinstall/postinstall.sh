@@ -196,9 +196,9 @@ echo ""
 echo ""
 if [ $change_root = "y" ]
   then
-  tput setaf 6; echo "Création des utilisateurs et changement des mots de passe.................................. En cours"
+  tput setaf 6; echo "Changement du mot de passe root.......................................................... En cours"
   Change-Password
-  tput setaf 7; echo "Création des utilisateurs et changement des mots de passe.................................. OK"
+  tput setaf 7; echo "Changement du mot de passe root.......................................................... OK"
 fi
 
 echo ""
@@ -208,6 +208,15 @@ if [ $change_sshport = "y" ]
   tput setaf 6; echo "Changement du port SSH.................................................................... En cours"
   Change-SSHPort
   tput setaf 7; echo "Changement du port SSH.................................................................... OK"
+fi
+
+echo ""
+echo ""
+if [ $change_hostname = "y" ]
+  then
+  tput setaf 6; echo "Changement du hostname.................................................................... En cours"
+  Change-Hostname
+  tput setaf 7; echo "Changement du hostname.................................................................... OK"
 fi
 
 echo ""
