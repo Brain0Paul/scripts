@@ -21,50 +21,18 @@ function Verif-System {
     exit
   fi
   
-}
-
-# Changement des sources APT
-version=$(grep "VERSION=" /etc/os-release |awk -F= {' print $2'}|sed s/\"//g |sed s/[0-9]//g | sed s/\)$//g |sed s/\(//g)
-function Change-Source {
-  echo "deb http://debian.mirrors.ovh.net/debian/ $version main contrib non-free
-  deb-src http://debian.mirrors.ovh.net/debian/ $version main contrib non-free
-  
-  deb http://security.debian.org/ $version/updates main contrib non-free
-  deb-src http://security.debian.org/ $version/updates main contrib non-free
-  
-  # $version-updates, previously known as 'volatile'
-  deb http://debian.mirrors.ovh.net/debian/ $version-updates main contrib non-free
-  deb-src http://debian.mirrors.ovh.net/debian/ $version-updates main contrib non-free" > /etc/apt/sources.list
-  echo 'deb http://deb.debian.org/debian $version-backports main' > \
-   /etc/apt/sources.list.d/backports.list
-}
 
 
 # Mise à jours des paquets
 function Install-PaquetsEssentiels {
   apt update && apt upgrade -y
-  apt install -y sudo 
-  apt install -y chpasswd
   apt install -y openssh-server
-  apt install -y cockpit
-  apt install -y locate
   apt install -y zsh
   apt install -y curl
-  apt install -y fonts-powerline
-  apt install -y fail2ban
-  apt install -y mosh
+  apt install -y vim
+  apt install -y git
 }
 
-# Installation des dépendances et de docker
-function Install-Docker {
-  tput setaf 2; apt-get install -y apt-transport-https ca-certificates gnupg2 software-properties-common
-  curl -fsSL https://download.docker.com/linux/$(. /etc/os-release; echo "$ID")/gpg | apt-key add -
-  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$(. /etc/os-release; echo "$ID") $(lsb_release -cs) stable"
-  apt-get update
-  apt-get -y install docker-ce docker-compose
-  systemctl enable docker
-  systemctl start docker
-}
 
 function Install-Zsh {
   tput setaf 2; chsh -s $(which zsh)
@@ -89,131 +57,8 @@ function Install-Zsh {
 function Update-db {
   updatedb
 }
-#Configuration et installation de Traefik et de Portainer
-function Install-TraefikPortainer {
 
-mkdir -p /apps/traefik
-mkdir -p /apps/portainer
-
-touch /apps/traefik/traefik.yml
-echo "api:
-  dashboard: true
-
-entryPoints:
-  http:
-    address: \":80\"
-  https:
-    address: \":443\"
-
-providers:
-  docker:
-    endpoint: \"unix:///var/run/docker.sock\"
-    exposedByDefault: false
-
-certificatesResolvers:
-  http:
-    acme:
-      email: $email
-      storage: acme.json
-      httpChallenge:
-        entryPoint: http
-
-providers.file:
-    filename: \"/etc/traefik/dynamic_conf.toml\"
-    watch: true
-" > /apps/traefik/traefik.yml
-
-touch /apps/traefik/config.yml
-echo "http:
-  middlewares:
-    https-redirect:
-      redirectScheme:
-        scheme: https
-
-    default-headers:
-      headers:
-        frameDeny: true
-        sslRedirect: true
-        browserXssFilter: true
-        contentTypeNosniff: true
-        forceSTSHeader: true
-        stsIncludeSubdomains: true
-        stsPreload: true
-
-    secured:
-      chain:
-        middlewares:
-        - default-headers
-  " > /apps/traefik/config.yml
-  
-  touch /apps/traefik/acme.json
-  chmod 600 /apps/traefik/acme.json
-  
-  touch docker-compose.yml
-  echo "version: '2'
-  
-services:
-  traefik:
-    image: traefik:latest
-    container_name: traefik
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - proxy
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /apps/traefik/traefik.yml:/traefik.yml:ro
-      - /apps/traefik/acme.json:/acme.json
-      - /apps/traefik/config.yml:/config.yml:ro
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.entrypoints=http
-      - traefik.http.routers.traefik.rule=Host(\"traefik.$ndd\")
-      - traefik.http.middlewares.traefik-auth.basicauth.users=admin:{SHA}0DPiKuNIrrVmD8IUCuw1hQxNqZc=
-      - traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.traefik.middlewares=traefik-https-redirect
-      - traefik.http.routers.traefik-secure.entrypoints=https
-      - traefik.http.routers.traefik-secure.rule=Host(\"traefik.$ndd\")
-      - traefik.http.routers.traefik-secure.middlewares=traefik-auth
-      - traefik.http.routers.traefik-secure.tls=true
-      - traefik.http.routers.traefik-secure.tls.certresolver=http
-      - traefik.http.routers.traefik-secure.service=api@internal
-
-
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    environment:
-      TEMPLATES: https://github.com/PAPAMICA/docker-compose-collection/blob/master/templates-portainer.json
-    networks:
-      - proxy
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /apps/portainer/data:/data
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.portainer.entrypoints=http
-      - traefik.http.routers.portainer.rule=Host(\"portainer.$ndd\")
-      - traefik.http.middlewares.portainer-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.portainer.middlewares=portainer-https-redirect
-      - traefik.http.routers.portainer-secure.entrypoints=https
-      - traefik.http.routers.portainer-secure.rule=Host(\"portainer.$ndd\")
-      - traefik.http.routers.portainer-secure.tls=true
-      - traefik.http.routers.portainer-secure.tls.certresolver=http
-      - traefik.http.routers.portainer-secure.service=portainer
-      - traefik.http.services.portainer.loadbalancer.server.port=9000
-      - traefik.docker.network=proxy
-    
-
+   
 networks:
   proxy:
     external: true
