@@ -20,6 +20,7 @@ function Verif-System {
     tput setaf 5; echo "ERREUR : Veuillez installer une version x64 !"
     exit
   fi
+  }
   
 # Mise à jours des paquets
 function Install-PaquetsEssentiels {
@@ -48,13 +49,13 @@ function Install-Zsh {
     echo "Traitement de $file ..."
     sed -i -e "s/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=agnoster/g" "$file"
   done
-}
+
 
 function Update-db {
   updatedb
 }
 
-}
+
 
 function Change-Password {
   tput setaf 6; echo "root:$password_root"
