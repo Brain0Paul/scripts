@@ -21,8 +21,6 @@ function Verif-System {
     exit
   fi
   
-
-
 # Mise à jours des paquets
 function Install-PaquetsEssentiels {
   apt update && apt upgrade -y
@@ -32,7 +30,6 @@ function Install-PaquetsEssentiels {
   apt install -y vim
   apt install -y git
 }
-
 
 function Install-Zsh {
   tput setaf 2; chsh -s $(which zsh)
@@ -44,7 +41,6 @@ function Install-Zsh {
 
   locale-gen --purge fr_FR.UTF-8
   echo -e 'LANG="fr_FR.UTF-8"\nLANGUAGE="fr_FR.UTF-8"\n' > /etc/default/locale
-
 
   # Modification de zsh
   for file in ~/.zshrc
