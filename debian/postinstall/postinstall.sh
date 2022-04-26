@@ -60,13 +60,13 @@ function Change-Hostname {
   for file in /etc/hostname
   do
     echo "Traitement de $file ..."
-    sed -i -e "s/deb-11-template/$hostname/" "$file"
+    sed -i -e "s/$old_hostname/$hostname/" "$file"
   done  
 }
 
 function Change-Hosts {
   cp /etc/hosts /etc/hosts_backup
-
+  old_hostname=$(hostname)
   for file in /etc/hosts
   do
     echo "Traitement de $file ..."
