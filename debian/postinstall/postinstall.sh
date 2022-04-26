@@ -58,27 +58,12 @@ function Update-db {
   updatedb
 }
 
-   
-networks:
-  proxy:
-    external: true
-  " > docker-compose.yml
-
-  tput setaf 2; docker network create proxy
-  docker-compose up -d
 }
 
 function Change-Password {
-  tput setaf 6; echo "root:$password_root" | chpasswd
+  tput setaf 6; echo "root:$password_root"
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
   tput setaf 7; echo "                                => Mot de passe de Root a été changé.                               "
-  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
-  tput setaf 2; adduser --quiet --disabled-password --shell /bin/bash --home /home/$name_user --gecos "User" $name_user
-  tput setaf 2; echo "$name_user:$password_user" | chpasswd
-  tput setaf 2; adduser $name_user sudo
-  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
-  tput bold; tput setaf 7; echo "                         => L'utilisateur $name_user a été créé.                         "
-  tput bold; tput setaf 7; echo "                         => $name_user fait parti du groupe sudo.                        "
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 }
 
@@ -133,8 +118,6 @@ tput setaf 6; read -p "Souhaitez vous créer les utilisateurs ? (y/n)  " create_
 if [ $create_user = "y" ]
   then
     tput setaf 6; read -p "===>     Entrez le mot de passe pour Root : " password_root
-    tput setaf 6; read -p "===>     Entrez un nom d'utilisateur : " name_user
-    tput setaf 6; read -p "===>     Entrez le mot de passe pour l'utilisateur $name_user : " password_user
 fi
 echo ""
 
@@ -153,26 +136,6 @@ if [ $change_motd = "y" ]
 fi
 echo ""
 
-tput setaf 6; read -p "Souhaitez vous installer Docker ? (y/n)  " install_docker
-if [ $install_docker = "y" ]
-  then
-  echo ""
-  tput setaf 6; read -p "Souhaitez vous installer Traefik et Portainer ? (y/n)  " install_traefik
-  if [ $install_traefik = "y" ]
-    then
-    tput setaf 6; read -p "===>     Entrez votre nom de domaine (ex : papamica.fr) : " ndd
-    tput setaf 6; read -p "===>     Entrez votre adresse mail pour Let's Encrypt : " email
-    echo ""
-    while [ -z $redirection ] || [ $redirection != 'y' ]
-    do
-      tput setaf 3; echo "ATTENTION ! Veuillez faire les redirections suivantes :"
-      tput setaf 3; echo "=> Traefik : traefik.$ndd => IP WAN de votre serveur !"
-      tput setaf 3; echo "=> Portainer : portainer.$ndd => IP WAN de votre serveur !"
-      echo ""
-      tput setaf 3; read -p "Les redirections ont bien été configurées ? (y/n) " redirection
-    done
-  fi
-fi
 echo ""
 tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 tput setaf 7; echo "                                           Début du script                                          "
@@ -184,12 +147,6 @@ echo ""
 tput setaf 6; echo "Vérification du système ................................................................... En cours"
 Verif-System
 tput setaf 7; echo "Vérification du système ................................................................... OK"
-echo ""
-
-
-tput setaf 6; echo "Configuration des sources ................................................................. En cours"
-Change-Source
-tput setaf 7; echo "Configuration des sources ................................................................. OK"
 echo ""
 
 tput setaf 6; echo "Installation des paquets essentiels........................................................ En cours"
@@ -206,23 +163,6 @@ tput setaf 6; echo "Mise à jour de la base de données.........................
 Update-db
 tput setaf 7; echo "Mise à jour de la base de données.......................................................... OK"
 
-echo ""
-echo ""
-if [ $install_docker = "y" ]
-  then
-  tput setaf 6; echo "Installation de Docker..................................................................... En cours"
-  Install-Docker
-  tput setaf 7; echo "Installation de Docker..................................................................... OK"
-fi
-
-echo ""
-echo ""
-if [ $install_traefik = "y" ]
-  then
-  tput setaf 6; echo "Installation de Traefik et de Portainer.................................................... En cours"
-  Install-TraefikPortainer
-  tput setaf 7; echo "Installation de Traefik et de Portainer.................................................... OK"
-fi
 
 echo ""
 echo ""
@@ -253,27 +193,10 @@ fi
 
 echo ""
 echo ""
-if [ $install_traefik = "y" ]
-  then
-  echo ""
-  echo ""
-  tput bold; tput setaf 7; echo "LISTES DES CONTAINERS EN COURS : "
-  tput setaf 3; echo ""
-  docker container ls
-fi
-
-echo ""
-echo ""
 tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 tput bold; tput setaf 7; echo "                               => PREPARATION TERMINEE <=                                "
 tput setaf 7; echo ""
-if [ $install_traefik = "y" ]
-  then
-  tput bold; tput setaf 7; echo "                               Portainer.$ndd                                          "
-  tput bold; tput setaf 7; echo "                               Traefik.$ndd                                            "
-  tput bold; tput setaf 7; echo "                          Identifiant Traefik : admin / admin                          "
-  tput setaf 7; echo ""
-fi
+
 tput bold; tput setaf 7; echo "                                Veuillez vous reconnecter                                "
 if [ $change_sshport = "y" ]
   then
