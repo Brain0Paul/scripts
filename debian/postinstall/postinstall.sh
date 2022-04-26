@@ -31,10 +31,6 @@ function Install-PaquetsEssentiels {
   apt install -y git
   apt install -y htop
 
-function Update-db {
-  updatedb
-}
-
 function Change-Password {
   tput setaf 6; echo "root:$password_root"
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
@@ -86,7 +82,6 @@ function Change-Hosts {
 
 # Changement du motd
 function Change-MOTD {
-  ip_du_serveur=$(hostname -i)
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
   tput bold; tput setaf 7; echo "                      => L'adresse IP du serveur est $ip_du_serveur.                     "
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
@@ -140,6 +135,7 @@ if [ $change_motd = "y" ]
   then
   tput setaf 6; read -p "===>     Entrez le nom du serveur : " name_server
   tput setaf 6; read -p "===>     Entrez le nom de l'hébergeur : " name_provider
+  tput setaf 6; read -p "===>     Entrez l'addresse ip du serveur : " ip_du_serveur
 fi
 echo ""
 
@@ -159,15 +155,10 @@ echo ""
 tput setaf 6; echo "Installation des paquets essentiels........................................................ En cours"
 Install-PaquetsEssentiels
 tput setaf 7; echo "Installation des paquets essentiels........................................................ OK"
-echo ""
-
-tput setaf 6; echo "Mise à jour de la base de données.......................................................... En cours"
-Update-db
-tput setaf 7; echo "Mise à jour de la base de données.......................................................... OK"
-
 
 echo ""
 echo ""
+
 if [ $change_root = "y" ]
   then
   tput setaf 6; echo "Changement du mot de passe root.......................................................... En cours"
