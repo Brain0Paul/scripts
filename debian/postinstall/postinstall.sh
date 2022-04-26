@@ -38,6 +38,19 @@ function Change-Password {
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 }
 
+# Désactivation PrintLastLog
+function NoLastLog {
+
+  for file in /etc/ssh/sshd_config
+  do
+    echo "Traitement de $file ..."
+    sed -i -e "s/#PrintLastLog yes/PrintLastLog no/" "$file"
+  done  
+  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
+  tput setaf 7; echo "                                 => Désactivation de PrintLastLog                                   "
+  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
+}
+
 # Changement du port SSH
 function Change-SSHPort {
   cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
@@ -50,22 +63,6 @@ function Change-SSHPort {
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
   tput setaf 7; echo "                                 => Port SSH remplacé par $ssh_port.                                "
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
-
-}
-
-# Désactivation PrintLastLog
-function NoLastLog {
-
-  for file in /etc/ssh/sshd_config
-  do
-    echo "Traitement de $file ..."
-    sed -i -e "s/#PrintLastLog yes/PrintLastLog no/" "$file"
-  done  
-  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
-  tput setaf 7; echo "                                 => Désactivation de PrintLastLog                                   "
-  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
-
-}
 
 # Changement du hostname
 function Change-Hostname {
