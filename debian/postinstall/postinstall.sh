@@ -55,8 +55,6 @@ function Update-db {
   updatedb
 }
 
-
-
 function Change-Password {
   tput setaf 6; echo "root:$password_root"
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
@@ -75,6 +73,31 @@ function Change-SSHPort {
   done  
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
   tput setaf 7; echo "                                 => Port SSH remplacé par $ssh_port.                                "
+  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
+
+}
+
+# Changement du hostname
+function Change-Hostname {
+  cp /etc/hostname /etc/hostname_backup
+
+  for file in /etc/hostname
+  do
+    echo "Traitement de $file ..."
+    sed -i -e "s/deb-11-template/$hostname/" "$file"
+  done  
+  
+function Change-Hosts {
+  cp /etc/hosts /etc/hosts_backup
+
+  for file in /etc/hosts
+  do
+    echo "Traitement de $file ..."
+    sed -i -e "s/deb-11-template/$hostname/" "$file"
+  done 
+  
+  tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
+  tput setaf 7; echo "                                 => deb-11-template remplacé par $hostname.                         "
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 
 }
@@ -105,16 +128,22 @@ function Change-MOTD {
   
 }
 #-----------------------------------------------------------------------------------------------------------------------------------
-install_traefik = "n"
 clear
 tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 tput setaf 7; echo "                                   Script d'installation de Debian                                  "
 tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 
-tput setaf 6; read -p "Souhaitez vous créer les utilisateurs ? (y/n)  " create_user
-if [ $create_user = "y" ]
+tput setaf 6; read -p "Souhaitez vous changer le mot de passe root ? (y/n)  " change_root
+if [ $change_root = "y" ]
   then
     tput setaf 6; read -p "===>     Entrez le mot de passe pour Root : " password_root
+fi
+echo ""
+
+tput setaf 6; read -p "Souhaitez vous changer le hostname ? (y/n)  " change_hostname
+if [ $change_hostname = "y" ]
+  then
+    tput setaf 6; read -p "===>     Entrez le nouveau hostname : " hostname
 fi
 echo ""
 
@@ -163,7 +192,7 @@ tput setaf 7; echo "Mise à jour de la base de données.........................
 
 echo ""
 echo ""
-if [ $create_user = "y" ]
+if [ $change_root = "y" ]
   then
   tput setaf 6; echo "Création des utilisateurs et changement des mots de passe.................................. En cours"
   Change-Password
