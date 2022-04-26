@@ -56,7 +56,7 @@ function Change-SSHPort {
 # Changement du hostname
 function Change-Hostname {
   cp /etc/hostname /etc/hostname_backup
-
+  old_hostname=$(hostname)
   for file in /etc/hostname
   do
     echo "Traitement de $file ..."
@@ -66,7 +66,6 @@ function Change-Hostname {
 
 function Change-Hosts {
   cp /etc/hosts /etc/hosts_backup
-  old_hostname=$(hostname)
   for file in /etc/hosts
   do
     echo "Traitement de $file ..."
