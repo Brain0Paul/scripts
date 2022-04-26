@@ -190,6 +190,7 @@ if [ $change_hostname = "y" ]
   then
   tput setaf 6; echo "Changement du hostname.................................................................... En cours"
   Change-Hostname
+  Change-Hosts
   tput setaf 7; echo "Changement du hostname.................................................................... OK"
 fi
 
