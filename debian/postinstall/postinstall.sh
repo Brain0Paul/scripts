@@ -55,7 +55,6 @@ function Change-SSHPort {
 
 # Désactivation PrintLastLog
 function NoLastLog {
-  cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
 
   for file in /etc/ssh/sshd_config
   do
