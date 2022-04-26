@@ -41,6 +41,7 @@ function Change-Password {
 
 # Désactivation PrintLastLog
 function NoLastLog {
+  cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
 
   for file in /etc/ssh/sshd_config
   do
@@ -54,10 +55,7 @@ function NoLastLog {
 
 # Changement du port SSH
 function Change-SSHPort {
-  cp /etc/ssh/sshd_config /etc/ssh/sshd_config_backup
 
-  for file in /etc/ssh/sshd_config
-  do
     echo "Traitement de $file ..."
     sed -i -e "s/#Port 22/Port $ssh_port/" "$file"
   done  
