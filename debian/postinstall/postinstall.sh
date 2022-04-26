@@ -30,6 +30,7 @@ function Install-PaquetsEssentiels {
   apt install -y vim
   apt install -y git
   apt install -y htop
+}
 
 function Change-Password {
   tput setaf 6; echo "root:$password_root"
