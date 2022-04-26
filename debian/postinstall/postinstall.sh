@@ -26,31 +26,10 @@ function Verif-System {
 function Install-PaquetsEssentiels {
   apt update && apt upgrade -y
   apt install -y openssh-server
-  apt install -y zsh
   apt install -y curl
   apt install -y vim
   apt install -y git
   apt install -y htop
-}
-
-function Install-Zsh {
-  tput setaf 2; chsh -s $(which zsh)
-
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/loket/oh-my-zsh/feature/batch-mode/tools/install.sh)" -s --batch || {
-    echo "Could not install Oh My Zsh" >/dev/stderr
-    exit 1
-  }
-
-  locale-gen --purge fr_FR.UTF-8
-  echo -e 'LANG="fr_FR.UTF-8"\nLANGUAGE="fr_FR.UTF-8"\n' > /etc/default/locale
-
-  # Modification de zsh
-  for file in ~/.zshrc
-  do
-    echo "Traitement de $file ..."
-    sed -i -e "s/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=agnoster/g" "$file"
-  done
-
 
 function Update-db {
   updatedb
@@ -180,11 +159,6 @@ echo ""
 tput setaf 6; echo "Installation des paquets essentiels........................................................ En cours"
 Install-PaquetsEssentiels
 tput setaf 7; echo "Installation des paquets essentiels........................................................ OK"
-echo ""
-
-tput setaf 6; echo "Installation de ZSH........................................................................ En cours"
-Install-Zsh
-tput setaf 7; echo "Installation de ZSH........................................................................ OK"
 echo ""
 
 tput setaf 6; echo "Mise à jour de la base de données.......................................................... En cours"
