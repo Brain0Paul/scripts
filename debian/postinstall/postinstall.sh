@@ -87,7 +87,8 @@ function Change-Hostname {
     echo "Traitement de $file ..."
     sed -i -e "s/deb-11-template/$hostname/" "$file"
   done  
-  
+}
+
 function Change-Hosts {
   cp /etc/hosts /etc/hosts_backup
 
@@ -96,7 +97,8 @@ function Change-Hosts {
     echo "Traitement de $file ..."
     sed -i -e "s/deb-11-template/$hostname/" "$file"
   done 
-  
+}
+
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
   tput setaf 7; echo "                                 => deb-11-template remplacé par $hostname.                         "
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
@@ -109,7 +111,7 @@ function Change-MOTD {
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
   tput bold; tput setaf 7; echo "                      => L'adresse IP du serveur est $ip_du_serveur.                     "
   tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
-
+}
 
   echo "
   ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
