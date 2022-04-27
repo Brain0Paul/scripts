@@ -60,5 +60,6 @@ if [ $change_motd = "y" ]
   then
   tput setaf 6; read -p "===>     Entrez le nom du serveur : " name_server
   tput setaf 6; read -p "===>     Entrez le nom de l'hébergeur : " name_provider
+  tput setaf 6; read -p "===>     Entrez l'addresse ip du server : " ip_du_serveur
 fi
 echo ""
