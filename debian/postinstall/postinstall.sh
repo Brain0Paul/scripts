@@ -136,7 +136,7 @@ echo ""
 if [ $change_motd = "y" ] 
   then
   tput setaf 6; echo "Changement du MOTD....................................................................... En cours"
-  Change-MOTD
+  change-MOTD
   tput setaf 7; echo "Changement du MOTD....................................................................... OK"
 fi
 
