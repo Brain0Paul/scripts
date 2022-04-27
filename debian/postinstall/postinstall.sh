@@ -96,6 +96,12 @@ if [ $change_sshport = "y" ]
 fi
 echo ""
 
+tput setaf 6; read -p "Souhaitez vous changer le mot de passe root ? (y/n)  " create_user
+if [ $create_user = "y" ]
+  then
+fi
+echo ""
+
 tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
 tput setaf 7; echo "                                           Début du script                                          "
 tput setaf 7; echo "----------------------------------------------------------------------------------------------------"
